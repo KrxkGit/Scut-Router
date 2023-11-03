@@ -1,5 +1,6 @@
 <script>
 import MyMenu from '../components/Menu.vue'
+import {RunSetAcInfo} from "../../wailsjs/go/SSHCommand/SSHClass";
 
 const ACList = [] // 复合型const变量只确保地址不变而非值不变，故可修改
 for (let i = 1; i < 20; i += 1) {
@@ -20,7 +21,9 @@ export default {
   },
   methods: {
     OnSubmit() {
-      alert(`Wlan_ac_name: ${this.AcName}\nWlan_ac_ip: ${this.AcIp}`)
+      RunSetAcInfo(this.AcIp, this.AcName)
+      alert('完成')
+      // alert(`Wlan_ac_name: ${this.AcName}\nWlan_ac_ip: ${this.AcIp}`)
     }
   },
   name: 'ACInfo'

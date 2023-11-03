@@ -19,6 +19,8 @@
   </div>
 </template>
 <script>
+import {RunAutoLogin, CancelAutoLogin, RunSetScutInfo} from "../../wailsjs/go/SSHCommand/SSHClass";
+
 export default {
   data() {
     return {
@@ -27,11 +29,14 @@ export default {
   },
   methods: {
     handleSubmit(valid, { username, password }) {
-      if (valid) {
-        this.$Modal.info({
-          title: '输入的内容如下：',
-          content: `username: ${username} | password: ${password} | type: ${this.AccountType}`,
-        })
+      if(valid) {
+        RunSetScutInfo(username, password)
+        if(this.AccountType == "本科生") {
+          RunAutoLogin()
+        } else {
+          CancelAutoLogin()
+        }
+        alert('完成')
       }
     },
   },

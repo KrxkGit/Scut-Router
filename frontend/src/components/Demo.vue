@@ -69,7 +69,7 @@
         <MyAvatar/>
       </Header>
       <Content class="layout-content">
-        <h2>自由定制，真正属于你的校园网路由器</h2>
+        <h2>自由定制，打造您的专属校园网路由</h2>
         <img src="../assets/Scut-Router.png"/>
       </Content>
       <Footer  class="layout-footer">

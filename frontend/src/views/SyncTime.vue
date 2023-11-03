@@ -2,6 +2,7 @@
 import MyMenu from '../components/Menu.vue'
 import Success from "../components/Success.vue"
 import Fail from "../components/Fail.vue"
+import {RunSyncTime} from "../../wailsjs/go/SSHCommand/SSHClass";
 
 export default {
   components: {
@@ -18,8 +19,9 @@ export default {
   },
   methods: {
     TryConnect() {
+      RunSyncTime()
       this.SyncStatus = true
-      this.FailStatus = true
+      // this.FailStatus = true
     }
   }
 }
