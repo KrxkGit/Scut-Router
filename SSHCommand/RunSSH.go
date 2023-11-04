@@ -221,13 +221,20 @@ func (s *SSHClass) RunSetNetwork(ip string, dnsArr string, netmask, gateway stri
 	cmd += fmt.Sprintf(" && uci set %sndp=relay", if4)
 	cmd += fmt.Sprintf(" && uci set %smaster=1", if4)
 
-	cmd += fmt.Sprintf(" && uci delete %sdns", if4)
+	cmd += fmt.Sprintf(" && uci add_list %sdns=::1", if4) // 此行必须添加，否则可能因为不存在list而导致错误
+	cmd += fmt.Sprintf(" && uci add_list %sdns=::2", if4) // 此行必须添加，否则可能因为不存在list而导致错误
+	cmd += fmt.Sprintf(" && uci delete %sdns", if4)       // 使用delete命令删除整个列表
 	cmd += fmt.Sprintf(" && uci add_list %sdns=2606:4700:4700::1111", if4)
 	cmd += fmt.Sprintf(" && uci add_list %sdns=2001:4860:4860::8888", if4)
 
 	log.Info("Set dhcp wan")
 	if5 := "/etc/config/dhcp.wan." // dhcp wan
 	cmd += fmt.Sprintf(" && uci set %signore=1", if5)
+
+	log.Info("Delete lan IPV6 Assign")
+	if6 := "/etc/config/network.lan."
+	cmd += fmt.Sprintf(" && uci set %sip6assign=60", if6) // 用于保证选项存在
+	cmd += fmt.Sprintf(" && uci delete %sip6assign", if6)
 
 	cmd += fmt.Sprintf(" && service network restart")
 	s.RunCommand(cmd)
