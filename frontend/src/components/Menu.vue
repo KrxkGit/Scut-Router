@@ -12,8 +12,11 @@
       <MenuGroup title="账号密码">
         <MenuItem name="2-1" @click="$router.push('/MainInfo')">账号密码</MenuItem>
       </MenuGroup>
+      <MenuGroup title="网络接口">
+        <MenuItem name="2-2" @click="$router.push('/NetworkInfo')">上网接口</MenuItem>
+      </MenuGroup>
       <MenuGroup title="认证服务器">
-        <MenuItem name="2-2" @click="$router.push('/ACInfo')">认证服务器</MenuItem>
+        <MenuItem name="2-3" @click="$router.push('/ACInfo')">认证服务器</MenuItem>
       </MenuGroup>
     </Submenu>
     <Submenu name="3">

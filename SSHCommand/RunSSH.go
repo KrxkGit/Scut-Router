@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	"io"
 	"os"
+	"strings"
 )
 
 type ScutInfo struct {
@@ -169,6 +170,68 @@ func (s *SSHClass) RunAutoLogin() {
 	cmd += fmt.Sprintf(" && crontab temp_cron\nrm temp_cron")
 
 	s.RunCommand(cmd)
+}
+
+func (s *SSHClass) RunSetNetwork(ip string, dnsArr string, netmask, gateway string) {
+	log.Info("RunSetNetwork is called")
+
+	log.Info("Set interface wan")
+	if1 := "/etc/config/network.wan." // 接口wan
+	cmd := fmt.Sprintf("uci set %sproto=static", if1)
+	cmd += fmt.Sprintf(" && uci set %sipaddr=%s", if1, ip)
+	cmd += fmt.Sprintf(" && uci set %snetmask=%s", if1, netmask)
+	cmd += fmt.Sprintf(" && uci set %sgateway=%s", if1, gateway)
+
+	log.Info(fmt.Sprintf("DNS列表：%s", dnsArr))
+	dns := strings.Split(dnsArr, " ")
+	dnsConcat := ""
+	for _, dnsItem := range dns {
+		dnsConcat += dnsItem
+		dnsConcat += " "
+	}
+	dnsConcat = "'" + dnsConcat[:len(dnsConcat)-1] + "'" // 裁剪最后一个空格
+	cmd += fmt.Sprintf(" && uci set %sdns=%s", if1, dnsConcat)
+
+	log.Info("Set interface wan6")
+	// 增加 interface wan6 选项
+	cmd += fmt.Sprintf(" && uci set /etc/config/network.wan6=interface")
+
+	if2 := "/etc/config/network.wan6." // 接口wan6
+	cmd += fmt.Sprintf(" && uci set %sproto=dhcpv6", if2)
+	cmd += fmt.Sprintf(" && uci set %sreqaddress=try", if2)
+	cmd += fmt.Sprintf(" && uci set %sreqprefix=auto", if2)
+	cmd += fmt.Sprintf(" && uci set %speerdns=0", if2)
+	cmd += fmt.Sprintf(" && uci set %sdns=%s", if2, "'2400:3200::1 2400:3200:baba::1'")
+
+	log.Info("Set dhcp lan")
+	if3 := "/etc/config/dhcp.lan." // dhcp lan
+	cmd += fmt.Sprintf(" && uci set %sdhcpv4=server", if3)
+	cmd += fmt.Sprintf(" && uci set %sra=relay", if3)
+	cmd += fmt.Sprintf(" && uci set %sdhcpv6=relay", if3)
+	cmd += fmt.Sprintf(" && uci set %sndp=relay", if3)
+
+	log.Info("Set dhcp wan6")
+	// 增加 dhcp wan6 选项
+	cmd += fmt.Sprintf(" && uci set /etc/config/dhcp.wan6=dhcp")
+
+	if4 := "/etc/config/dhcp.wan6." // dhcp wan6
+	cmd += fmt.Sprintf(" && uci set %sdhcpv4=server", if4)
+	cmd += fmt.Sprintf(" && uci set %sra=relay", if4)
+	cmd += fmt.Sprintf(" && uci set %sdhcpv6=relay", if4)
+	cmd += fmt.Sprintf(" && uci set %sndp=relay", if4)
+	cmd += fmt.Sprintf(" && uci set %smaster=1", if4)
+
+	cmd += fmt.Sprintf(" && uci delete %sdns", if4)
+	cmd += fmt.Sprintf(" && uci add_list %sdns=2606:4700:4700::1111", if4)
+	cmd += fmt.Sprintf(" && uci add_list %sdns=2001:4860:4860::8888", if4)
+
+	log.Info("Set dhcp wan")
+	if5 := "/etc/config/dhcp.wan." // dhcp wan
+	cmd += fmt.Sprintf(" && uci set %signore=1", if5)
+
+	cmd += fmt.Sprintf(" && service network restart")
+	s.RunCommand(cmd)
+	log.Info("SetNetwork finished")
 }
 
 func (s *SSHClass) CancelAutoLogin() {

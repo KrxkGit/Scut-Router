@@ -34,6 +34,10 @@ export function RunSetAcInfo(arg1, arg2) {
   return window['go']['SSHCommand']['SSHClass']['RunSetAcInfo'](arg1, arg2);
 }
 
+export function RunSetNetwork(arg1, arg2, arg3, arg4) {
+  return window['go']['SSHCommand']['SSHClass']['RunSetNetwork'](arg1, arg2, arg3, arg4);
+}
+
 export function RunSetScutInfo(arg1, arg2) {
   return window['go']['SSHCommand']['SSHClass']['RunSetScutInfo'](arg1, arg2);
 }

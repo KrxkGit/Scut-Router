@@ -5,6 +5,7 @@ import ACInfo from '../views/ACInfo.vue'
 import WiredLogin from '../views/WiredLogin.vue'
 import WirelessLogin from '../views/WirelessLogin.vue'
 import SyncTime from "../views/SyncTime.vue"
+import NetworkInfo from "../views/NetworkInfo.vue"
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/SyncTime',
     name: 'sync-time',
     component: SyncTime
+  },
+  {
+    path: '/NetworkInfo',
+    name: 'network-info',
+    component: NetworkInfo
   }
 ]
 

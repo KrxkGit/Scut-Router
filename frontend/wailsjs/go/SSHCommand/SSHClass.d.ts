@@ -18,6 +18,8 @@ export function RunCommand(arg1:string):Promise<void>;
 
 export function RunSetAcInfo(arg1:string,arg2:string):Promise<void>;
 
+export function RunSetNetwork(arg1:string,arg2:string,arg3:string,arg4:string):Promise<void>;
+
 export function RunSetScutInfo(arg1:string,arg2:string):Promise<void>;
 
 export function RunSyncTime():Promise<void>;
