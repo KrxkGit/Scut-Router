@@ -162,6 +162,13 @@ func (s *SSHClass) RunSyncTime() {
 	s.RunCommand(cmd)
 }
 
+func (s *SSHClass) RunReboot() {
+	cmd := fmt.Sprintf("reboot")
+
+	log.Info("RunReboot is called")
+	s.RunCommand(cmd)
+}
+
 func (s *SSHClass) RunAutoLogin() {
 	log.Info("RunAutoLogin is called")
 

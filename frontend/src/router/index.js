@@ -6,6 +6,7 @@ import WiredLogin from '../views/WiredLogin.vue'
 import WirelessLogin from '../views/WirelessLogin.vue'
 import SyncTime from "../views/SyncTime.vue"
 import NetworkInfo from "../views/NetworkInfo.vue"
+import Reboot from "../views/Reboot.vue";
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/NetworkInfo',
     name: 'network-info',
     component: NetworkInfo
+  },
+  {
+    path: '/RebootDevice',
+    name: 'reboot-device',
+    component: Reboot
   }
 ]
 

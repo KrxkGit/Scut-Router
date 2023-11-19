@@ -33,6 +33,9 @@
       <MenuGroup title="时间同步">
         <MenuItem name="3-3" @click="$router.push('/SyncTime')">时间同步</MenuItem>
       </MenuGroup>
+      <MenuGroup title="重启设备">
+        <MenuItem name="3-4" @click="$router.push('/RebootDevice')">重启路由器</MenuItem>
+      </MenuGroup>
     </Submenu>
     <Submenu name="4">
       <template #title>

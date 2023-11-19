@@ -30,6 +30,10 @@ export function RunCommand(arg1) {
   return window['go']['SSHCommand']['SSHClass']['RunCommand'](arg1);
 }
 
+export function RunReboot() {
+  return window['go']['SSHCommand']['SSHClass']['RunReboot']();
+}
+
 export function RunSetAcInfo(arg1, arg2) {
   return window['go']['SSHCommand']['SSHClass']['RunSetAcInfo'](arg1, arg2);
 }

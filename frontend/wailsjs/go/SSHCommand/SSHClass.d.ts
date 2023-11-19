@@ -16,6 +16,8 @@ export function RunAutoLogin():Promise<void>;
 
 export function RunCommand(arg1:string):Promise<void>;
 
+export function RunReboot():Promise<void>;
+
 export function RunSetAcInfo(arg1:string,arg2:string):Promise<void>;
 
 export function RunSetNetwork(arg1:string,arg2:string,arg3:string,arg4:string):Promise<void>;
