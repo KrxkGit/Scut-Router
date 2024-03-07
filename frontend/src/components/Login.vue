@@ -14,7 +14,9 @@
         </Radio>
       </RadioGroup>
       <br v-for="index of 2" :id="index"/>
-      <Submit />
+      <Submit>
+        保存并应用
+      </Submit>
     </Login>
   </div>
 </template>
