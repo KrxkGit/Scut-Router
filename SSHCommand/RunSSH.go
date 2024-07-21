@@ -79,14 +79,20 @@ type accountInfo struct {
 }
 
 func (s *SSHClass) preLoadInfo() {
-	// 遇加载信息
-	infoFile, err := os.ReadFile("./Account.json")
+	// 预加载信息
+	log.Info("preLoadInfo is called")
+	accountPath := "Account.json"
+	infoFile, err := os.ReadFile(accountPath)
+
 	if err != nil {
 		log.Info(err.Error())
 		return
 	}
 	accInfo := new(accountInfo)
-	json.Unmarshal(infoFile, accInfo)
+	err = json.Unmarshal(infoFile, accInfo)
+	if err != nil {
+		return
+	}
 
 	s.Username = accInfo.Username
 	s.Password = accInfo.Password
@@ -95,7 +101,8 @@ func (s *SSHClass) preLoadInfo() {
 }
 
 func (s *SSHClass) saveInfo() {
-	infoFile, err := os.Create("./Account.json")
+	log.Info("saveInfo is called")
+	infoFile, err := os.Create("Account.json")
 	if err != nil {
 		log.Error(err.Error())
 	}
@@ -120,13 +127,13 @@ func (s *SSHClass) RunSetScutInfo(username, password string) {
 
 	s.Username = username
 	s.Password = password
+
 	s.HelpSetInfo()
 }
 
 func (s *SSHClass) RunSetAcInfo(acIP, acName string) {
 	log.Info("RunSetAcInfo is called")
 	s.preLoadInfo()
-
 	s.AcIP = acIP
 	s.AcName = acName
 	s.HelpSetInfo()
@@ -152,6 +159,7 @@ func (s *SSHClass) HelpSetInfo() {
 	cmd += fmt.Sprintf(" && echo %s >> SCUT_info.txt", s.Password)
 	cmd += fmt.Sprintf(" && echo %s >> SCUT_info.txt", s.AcIP)
 	cmd += fmt.Sprintf(" && echo %s >> SCUT_info.txt", s.AcName)
+
 	s.RunCommand(cmd)
 }
 
@@ -256,22 +264,27 @@ func (s *SSHClass) CancelAutoLogin() {
 	s.RunCommand(cmd)
 }
 
-type routerConfig struct {
+type RouterConfig struct {
 	Addr     string `json:"addr"`
 	Password string `json:"password"`
 	Port     string `json:"port"`
 }
 
 func NewRunSSH() *SSHClass {
-	buf, err := os.ReadFile("./config.json")
+	configPath := "config.json"
+
+	buf, err := os.ReadFile(configPath)
 	if err != nil {
 		log.Error(err.Error())
-		f, _ := os.Create("./config.json")
-		f.Close()
+		f, _ := os.Create(configPath)
+		err := f.Close()
+		if err != nil {
+			return nil
+		}
 		return nil
 	}
 
-	rConfig := new(routerConfig)
+	rConfig := new(RouterConfig)
 	err = json.Unmarshal(buf, rConfig)
 	if err != nil {
 		log.Error(err.Error())

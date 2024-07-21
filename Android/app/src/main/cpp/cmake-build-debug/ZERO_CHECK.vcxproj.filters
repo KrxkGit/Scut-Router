@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\krxkli\Projects\Scut-Router\Android\app\src\main\cpp\cmake-build-debug\CMakeFiles\1efec1b9b47a8b795933ed1bcd6bf0ab\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D11AC500-1152-361E-AD93-43C4430B76D8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
