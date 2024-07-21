@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">华工路由器 - Developed by Krxk</string>
+    <string name="welcome_words">欢迎使用校园网路由尊享版</string>
+    <string name="my_avatar_desc">开发者头像</string>
+    <string name="Small_Title">自由定制，打造您的专属校园网路由</string>
+    <string name="system_tools">系统工具</string>
+    <string name="loginTitle">配置校园网账号</string>
+    <string name="postgraduate">研究生</string>
+    <string name="undergraduate">本科生</string>
+    <string name="save_info">保存信息</string>
+    <string name="account">校园网账号</string>
+    <string name="password">校园网密码</string>
+    <string name="server_title">配置认证服务器</string>
+    <string name="ac_name">认证服务器名</string>
+    <string name="ac_ip">认证服务器 IP 地址</string>
+    <string name="scut_ip">校园网 IP 地址</string>
+    <string name="netmask">校园网子网掩码</string>
+    <string name="gateway">校园网网关</string>
+</resources>
