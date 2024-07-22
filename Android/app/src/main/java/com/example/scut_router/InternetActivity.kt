@@ -30,6 +30,8 @@ class InternetActivity : AppCompatActivity() {
             val dns = "$dns1 $dns2"
 
             setNetwork(ip, dns, netmask, gateway)
+
+            Toast.makeText(this, "完成", Toast.LENGTH_SHORT).show()
         }
     }
 

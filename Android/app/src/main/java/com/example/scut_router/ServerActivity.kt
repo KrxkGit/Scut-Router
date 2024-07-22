@@ -25,6 +25,8 @@ class ServerActivity : AppCompatActivity() {
             val acName = findViewById<EditText>(R.id.ac_name).text.toString()
 
             setAcInfo(acIp, acName)
+
+            Toast.makeText(this, "完成", Toast.LENGTH_SHORT).show()
         }
     }
 

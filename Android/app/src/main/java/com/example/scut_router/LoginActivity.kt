@@ -25,19 +25,22 @@ class LoginActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.save_info_button).setOnClickListener() {
+            // 提前保存用户名和密码，否则视图刷新无法获取
+            username = findViewById<EditText>(R.id.username).text.toString()
+            password = findViewById<EditText>(R.id.password).text.toString()
+
             // 本科生自动登录
             val radio = findViewById<RadioGroup>(R.id.radioButton).getChildAt(0) as RadioButton
             if (radio.isChecked) {
                 autoLogin()
             }
 
-            username = findViewById<EditText>(R.id.username).text.toString()
-            password = findViewById<EditText>(R.id.password).text.toString()
-            if (username!!.isEmpty() || password!!.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) {
                 setScutInfo("", "")
             } else {
-                setScutInfo(username!!, password!!)
+                setScutInfo(username, password)
             }
+            Toast.makeText(this, "完成", Toast.LENGTH_SHORT).show()
         }
     }
 
