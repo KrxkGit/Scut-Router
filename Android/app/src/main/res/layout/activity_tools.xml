@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ToolsActivity">
+
+    <TextView
+        android:id="@+id/titleTools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/system_tools"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/titleTools"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+
+        <ImageButton
+            android:id="@+id/imageButtonWired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/wired_login_icon_foreground"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWireless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/wireless_login_icon_foreground"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonWired"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageButton
+            android:id="@+id/imageButtonSyncTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonWired"
+            app:srcCompat="@drawable/sync_time_icon_foreground"
+            />
+
+        <ImageButton
+            android:id="@+id/imageButtonReboot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/reboot_icon_foreground"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonWireless"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonSyncTime"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

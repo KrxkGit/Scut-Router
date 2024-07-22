@@ -1,3 +1,5 @@
+//go:build windows
+
 package main
 
 import (
@@ -34,7 +36,7 @@ func main() {
 	}
 	defer f.Close()
 	f.WriteString("Startup")
-	SSHObj := SSHCommand.NewRunSSH()
+	SSHObj := SSHCommand.NewRunSSH("")
 	SSHObj.SetOut(f)
 
 	SSHObj.RunCommand("touch test.txt") // 运行测试命令
