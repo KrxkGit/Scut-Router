@@ -48,13 +48,14 @@ wails build
 
 然后重新构建。
 
-## 编译 Android
+## ▶编译 Android
 
-### 编译 Golang 跨语言包
+### ▶编译 Golang 跨语言包
 
 > cd Compatibility
+
 > ./build_android.sh
 
-### 编译为 APK
+### ▶编译为 APK
 
 使用 Android Studio 打开 Android 文件夹 项目编译即可。
