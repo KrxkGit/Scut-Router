@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Scut-Router - Developed by Krxk</string>
+    <string name="welcome_words">Welcome to the Campus Network Router Premium Edition</string>
+    <string name="my_avatar_desc">Author\'s Avatar</string>
+    <string name="Small_Title">Free customization, create your own campus network routing</string>
+    <string name="system_tools">System Tools</string>
+    <string name="GithubSrc" translatable="false">https://github.com/KrxkGit/Scut-Router</string>
+    <string name="loginTitle">Configuring Internet Access Information</string>
+    <string name="postgraduate">postgraduate</string>
+    <string name="undergraduate">undergraduate</string>
+    <string name="save_info">Save Info</string>
+    <string name="account">Account</string>
+    <string name="password">password</string>
+    <string name="server_title">Configuring the authentication Server</string>
+    <string name="ac_name">Wlan AC Name</string>
+    <string name="ac_ip">AC IP</string>
+    <string name="scut_ip">scut_ip</string>
+    <string name="netmask">netmask</string>
+    <string name="gateway">gateway</string>
+    <string name="dns_1" translatable="false">DNS 1</string>
+    <string name="dns_2" translatable="false">DNS 2</string>
+</resources>

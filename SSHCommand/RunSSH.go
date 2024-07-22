@@ -79,14 +79,17 @@ type accountInfo struct {
 }
 
 func (s *SSHClass) preLoadInfo() {
-	// 遇加载信息
+	// 预加载信息
 	infoFile, err := os.ReadFile("./Account.json")
 	if err != nil {
 		log.Info(err.Error())
 		return
 	}
 	accInfo := new(accountInfo)
-	json.Unmarshal(infoFile, accInfo)
+	err = json.Unmarshal(infoFile, accInfo)
+	if err != nil {
+		return
+	}
 
 	s.Username = accInfo.Username
 	s.Password = accInfo.Password
@@ -95,6 +98,7 @@ func (s *SSHClass) preLoadInfo() {
 }
 
 func (s *SSHClass) saveInfo() {
+	log.Info("saveInfo is called")
 	infoFile, err := os.Create("./Account.json")
 	if err != nil {
 		log.Error(err.Error())
@@ -256,22 +260,24 @@ func (s *SSHClass) CancelAutoLogin() {
 	s.RunCommand(cmd)
 }
 
-type routerConfig struct {
+type RouterConfig struct {
 	Addr     string `json:"addr"`
 	Password string `json:"password"`
 	Port     string `json:"port"`
 }
 
 func NewRunSSH() *SSHClass {
-	buf, err := os.ReadFile("./config.json")
+	configPath := "./config.json"
+
+	buf, err := os.ReadFile(configPath)
 	if err != nil {
 		log.Error(err.Error())
-		f, _ := os.Create("./config.json")
+		f, _ := os.Create(configPath)
 		f.Close()
 		return nil
 	}
 
-	rConfig := new(routerConfig)
+	rConfig := new(RouterConfig)
 	err = json.Unmarshal(buf, rConfig)
 	if err != nil {
 		log.Error(err.Error())
