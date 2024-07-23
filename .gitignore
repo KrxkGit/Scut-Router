@@ -4,3 +4,6 @@ node_modules
 frontend/dist
 frontend/.idea
 frontend/node_modules
+
+Compatibility/out
+backup_GoEnv.txt
