@@ -31,9 +31,11 @@ func fileExists(filename string) bool {
 }
 
 //export Init
-func Init() {
+func Init(downloadPath unsafe.Pointer) {
 	if CompatibleSSHObj == nil {
-		outPath := "/sdcard/Download/Scut-Router"
+		downloadPathStr := C.GoString((*C.char)(downloadPath))
+		outPath := downloadPathStr + "/Scut-Router"
+		//"/sdcard/Download/Scut-Router"
 		if !fileExists(outPath) {
 			err := os.MkdirAll(outPath, 0777)
 			if err != nil {
