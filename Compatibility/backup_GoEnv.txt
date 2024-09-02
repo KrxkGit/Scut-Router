@@ -1,5 +1,5 @@
 set GO111MODULE=
-set GOARCH=arm64
+set GOARCH=386
 set GOBIN=
 set GOCACHE=C:\Users\krxkli\AppData\Local\go-build
 set GOENV=C:\Users\krxkli\AppData\Roaming\go\env
@@ -24,9 +24,10 @@ set GOTOOLDIR=C:\Program Files\Go\pkg\tool\windows_amd64
 set GOVCS=
 set GOVERSION=go1.22.5
 set GCCGO=gccgo
+set GO386=sse2
 set AR=ar
-set CC=C:/Users/krxkli/AppData/Local/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/windows-x86_64/bin/aarch64-linux-android34-clang
-set CXX=C:/Users/krxkli/AppData/Local/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/windows-x86_64/bin/aarch64-linux-android34-clang++
+set CC=C:/Users/krxkli/AppData/Local/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/windows-x86_64/bin/i686-linux-android34-clang
+set CXX=C:/Users/krxkli/AppData/Local/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/windows-x86_64/bin/i686-linux-android34-clang++
 set CGO_ENABLED=1
 set GOMOD=D:\krxkli\Projects\Scut-Router\go.mod
 set GOWORK=
@@ -36,4 +37,4 @@ set CGO_CXXFLAGS=-O2 -g
 set CGO_FFLAGS=-O2 -g
 set CGO_LDFLAGS=-O2 -g
 set PKG_CONFIG=pkg-config
-set GOGCCFLAGS=-fPIC -pthread -fno-caret-diagnostics -Qunused-arguments -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=C:\Users\krxkli\AppData\Local\Temp\go-build626219188=/tmp/go-build -gno-record-gcc-switches
+set GOGCCFLAGS=-fPIC -m32 -pthread -fno-caret-diagnostics -Qunused-arguments -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=C:\Users\krxkli\AppData\Local\Temp\go-build2780943356=/tmp/go-build -gno-record-gcc-switches

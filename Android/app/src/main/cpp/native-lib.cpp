@@ -1,6 +1,26 @@
 #include <jni.h>
 #include <string>
-#include "libSSHCommand.h"
+
+// 检测 Android 架构
+#if defined(__ANDROID__)
+#if defined(__x86__)
+#define ARCHITECTURE "x86"
+#include "../jniLibs/x86/libSSHCommand.h"
+#elif defined(__x86_64__)
+#define ARCHITECTURE "x86_64"
+#include "../jniLibs/x86_64/libSSHCommand.h"
+#elif defined(__arm__)
+#define ARCHITECTURE "ARM"
+#include "../jniLibs/armeabi-v7a/libSSHCommand.h"
+#elif defined(__aarch64__)
+#define ARCHITECTURE "ARM64"
+#include "../jniLibs/arm64-v8a/libSSHCommand.h"
+#else
+#define ARCHITECTURE "Unknown Architecture"
+#endif
+#else
+#define ARCHITECTURE "Not an Android Platform"
+#endif
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -68,12 +88,8 @@ Java_com_example_scut_1router_InternetActivity_setNetwork(JNIEnv *env, jobject t
     env->ReleaseStringUTFChars(gateway, gatewayStr);
 
 }
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_example_scut_1router_MainActivity_00024Companion_initLibSSHCommand(JNIEnv *env,
-                                                                            jobject thiz) {
-    Init();
-}
+
+
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -92,4 +108,16 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_scut_1router_LoginActivity_cancelAutoLogin(JNIEnv *env, jobject thiz) {
     CancelAutoLogin();
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_scut_1router_MainActivity_00024Companion_initLibSSHCommand(JNIEnv *env,
+                                                                            jobject thiz,
+                                                                            jstring download_path) {
+
+    const char* download_pathStr = env->GetStringUTFChars(download_path, nullptr);
+
+    Init((void *)download_pathStr);
+
+    env->ReleaseStringUTFChars(download_path, download_pathStr);
 }
