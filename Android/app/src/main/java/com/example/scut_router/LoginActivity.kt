@@ -5,15 +5,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
-    private var username: String? = null
-    private var password: String? = null
-
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,13 +29,16 @@ class LoginActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.save_info_button).setOnClickListener() {
             // 提前保存用户名和密码，否则视图刷新无法获取
-            username = findViewById<EditText>(R.id.username).text.toString()
-            password = findViewById<EditText>(R.id.password).text.toString()
+            val username = findViewById<EditText>(R.id.username).text.toString()
+            val password = findViewById<EditText>(R.id.password).text.toString()
 
             // 本科生自动登录
-            val radio = findViewById<RadioGroup>(R.id.radioButton).getChildAt(0) as RadioButton
+            val radio = findViewById<RadioButton>(R.id.radioButton)
+
             if (radio.isChecked) {
                 autoLogin()
+            } else {
+                cancelAutoLogin()
             }
 
             if (username.isEmpty() || password.isEmpty()) {
@@ -40,11 +46,13 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 setScutInfo(username, password)
             }
-            Toast.makeText(this, "完成", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
         }
     }
 
     private external fun setScutInfo(username : String, password : String)
     private external fun autoLogin()
+    private external fun cancelAutoLogin()
 
 }

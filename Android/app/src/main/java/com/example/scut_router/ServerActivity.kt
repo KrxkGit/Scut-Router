@@ -3,6 +3,7 @@ package com.example.scut_router
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,7 +27,7 @@ class ServerActivity : AppCompatActivity() {
 
             setAcInfo(acIp, acName)
 
-            Toast.makeText(this, "完成", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
         }
     }
 

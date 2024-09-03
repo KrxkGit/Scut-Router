@@ -1,29 +1,39 @@
 package com.example.scut_router
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
+import android.text.format.Formatter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.scut_router.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private external fun setAcInfo(acName : String, acIp : String)
+    private val requestAccessFilePermission: Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 初始化 SSH 库
-        initLibSSHCommand()
+        requestPermissions() // 请求文件管理权限
 
+        // 加载布局
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 为按钮设置点击事件
-        var intent : Intent
+        var intent: Intent
         binding.imageButtonAccount.setOnClickListener() {
 //            Toast.makeText(this, "Account", Toast.LENGTH_SHORT).show()
             intent = Intent(this, LoginActivity::class.java)
@@ -51,25 +61,143 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
+
+        // 检查连接
+        if (!checkIsValidConn()) {
+            val alertBuilder = AlertDialog.Builder(this)
+            alertBuilder.setTitle(getString(R.string.validConnTitle))
+            alertBuilder.setMessage(getString(R.string.validConnMsg))
+            alertBuilder.setPositiveButton(getString(R.string.validConnYes)) { _, _ ->
+                finish()
+            }
+            alertBuilder.setNegativeButton(getString(R.string.validConnNo)) { dialog, _ ->
+                dialog.dismiss()
+                loadNativeLib()
+            }
+            alertBuilder.show()
+        } else {
+            loadNativeLib()
+        }
     }
+
+    private fun loadNativeLib() {
+        Toast.makeText(this, getString(R.string.loadCore), Toast.LENGTH_SHORT).show()
+        // 加载 Native 库
+        System.loadLibrary("scut_router")
+        // 初始化 SSH 库
+        val downloadPath: String =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+        initLibSSHCommand(downloadPath)
+
+        Toast.makeText(this, getString(R.string.core_loaded_successfully), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkIsValidConn(): Boolean {
+        // 检查是否正确连接路由器
+        val context: Context = this
+        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInfo = wifiManager.connectionInfo
+        val ipAddr = wifiInfo.ipAddress
+
+        val ipStr = Formatter.formatIpAddress(ipAddr)
+        println("IP 地址： $ipStr")
+
+        if (ipStr != this.getString(R.string.default_router_conn)) {
+            return false
+        } else {
+            return true
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
 
-        destroyLibSSHCommand()
+        // 不销毁 SSH 库，因为应用转到后台也会调用此处
+//        destroyLibSSHCommand()
     }
 
     /**
      * A native method that is implemented by the 'scut_router' native library,
      * which is packaged with this application.
      */
-    private external fun initLibSSHCommand()
+
     private external fun destroyLibSSHCommand()
 
-    companion object {
-        // Used to load the 'scut_router' library on application startup.
-        init {
-            System.loadLibrary("scut_router")
+    private external fun initLibSSHCommand(downloadPath: String)
+
+    /**
+     * 请求文件读写权限
+     */
+    private fun requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11 及更高版本，检查 MANAGE_EXTERNAL_STORAGE 权限
+            if (Environment.isExternalStorageManager()) {
+                // 权限已被授予，可以进行文件操作
+                Toast.makeText(
+                    this,
+                    "权限已成功获取，若首次授予请重启应用以正常运行",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                // 权限未被授予，提示用户去设置中开启
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+        } else {
+            // Android 10 及更低版本，检查 READ 和 WRITE 权限
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf<String>(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), requestAccessFilePermission
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            requestAccessFilePermission -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() &&
+                            grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                ) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    Toast.makeText(
+                        this,
+                        "权限已成功获取，若首次授予请重启应用以正常运行",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+                    Toast.makeText(this, "权限被拒绝，无法正常工作，请重启", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
         }
     }
 }

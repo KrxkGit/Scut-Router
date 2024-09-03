@@ -7,6 +7,7 @@ import (
 	"github.com/krxkgit/scut-router/SSHCommand"
 	"github.com/labstack/gommon/log"
 	"os"
+	"unsafe"
 )
 
 var CompatibleSSHObj *SSHCommand.SSHClass = nil
@@ -30,16 +31,22 @@ func fileExists(filename string) bool {
 }
 
 //export Init
-func Init() {
+func Init(downloadPath unsafe.Pointer) {
 	if CompatibleSSHObj == nil {
-		outPath := "/sdcard/Download/Scut-Router"
-		os.Chdir(outPath) // 改变当前工作目录
-
+		downloadPathStr := C.GoString((*C.char)(downloadPath))
+		outPath := downloadPathStr + "/Scut-Router"
+		//"/sdcard/Download/Scut-Router"
 		if !fileExists(outPath) {
 			err := os.MkdirAll(outPath, 0777)
 			if err != nil {
 				log.Error(err.Error())
 			}
+		}
+
+		// 改变当前工作目录
+		err := os.Chdir(outPath)
+		if err != nil {
+			return
 		}
 
 		// 设置日志输出
@@ -56,10 +63,9 @@ func Init() {
 		}
 		f.WriteString("Startup")
 
-		configPath := "./config.json"
+		configPath := "config.json"
 		if !fileExists(configPath) {
 			fConfig, _ := os.Create(configPath)
-			defer fConfig.Close()
 			/**
 			 * 若配置文件不存在，写入默认配置文件
 			 */
@@ -71,7 +77,6 @@ func Init() {
 			b, _ := json.Marshal(rConfig)
 			fConfig.Write(b)
 			fConfig.Close()
-
 		}
 		CompatibleSSHObj = SSHCommand.NewRunSSH()
 		CompatibleSSHObj.SetOut(f)
@@ -90,16 +95,6 @@ func Destroy() {
 //export Reboot
 func Reboot() {
 	CompatibleSSHObj.RunReboot()
-}
-
-//export SetScutInfo
-func SetScutInfo(username, password string) {
-	CompatibleSSHObj.RunSetScutInfo(username, password)
-}
-
-//export SetAcInfo
-func SetAcInfo(acIP, acName string) {
-	CompatibleSSHObj.RunSetAcInfo(acIP, acName)
 }
 
 //export WiredLogin
@@ -122,7 +117,32 @@ func AutoLogin() {
 	CompatibleSSHObj.RunAutoLogin()
 }
 
+//export CancelAutoLogin
+func CancelAutoLogin() {
+	CompatibleSSHObj.CancelAutoLogin()
+}
+
+//export SetScutInfo
+func SetScutInfo(username, password unsafe.Pointer) {
+	goUsername := C.GoString((*C.char)(username))
+	goPassword := C.GoString((*C.char)(password))
+
+	CompatibleSSHObj.RunSetScutInfo(goUsername, goPassword)
+}
+
+//export SetAcInfo
+func SetAcInfo(acIP, acName unsafe.Pointer) {
+	goAcIP := C.GoString((*C.char)(acIP))
+	goAcName := C.GoString((*C.char)(acName))
+
+	CompatibleSSHObj.RunSetAcInfo(goAcIP, goAcName)
+}
+
 //export SetNetwork
-func SetNetwork(ip string, dnsArr string, netmask, gateway string) {
-	CompatibleSSHObj.RunSetNetwork(ip, dnsArr, netmask, gateway)
+func SetNetwork(ip, dnsArr, netmask, gateway unsafe.Pointer) {
+	goIP := C.GoString((*C.char)(ip))
+	goDnsArr := C.GoString((*C.char)(dnsArr))
+	goNetmask := C.GoString((*C.char)(netmask))
+	goGateway := C.GoString((*C.char)(gateway))
+	CompatibleSSHObj.RunSetNetwork(goIP, goDnsArr, goNetmask, goGateway)
 }

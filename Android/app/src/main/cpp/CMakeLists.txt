@@ -11,6 +11,8 @@ cmake_minimum_required(VERSION 3.22.1)
 # build script scope).
 project("scut_router")
 
+# 输出正在编译的架构
+message(STATUS "ANDROID_ABI: ${ANDROID_ABI}")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -32,10 +34,9 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
 
 # 注意加上 ${CMAKE_SOURCE_DIR} 环境变量，否则会找不到头文件
 set(HEADER_PATH ${CMAKE_SOURCE_DIR}/../../../../../Compatibility/out/)
-include_directories(${HEADER_PATH}) # 包含 libSSHCommand.h
 
 # 将库添加到 jniLibs 目录下，保证会自动拷贝到 apk 包
-set(Compatibility_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/arm64-v8a)
+set(Compatibility_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}) # 跨平台编译
 add_library(Compatibility SHARED IMPORTED)
 set_property(TARGET Compatibility PROPERTY IMPORTED_NO_SONAME 1)
 set_target_properties(Compatibility PROPERTIES IMPORTED_LOCATION ${Compatibility_DIR}/libSSHCommand.so)
