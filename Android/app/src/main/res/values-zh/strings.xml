@@ -17,4 +17,10 @@
     <string name="scut_ip">校园网 IP 地址</string>
     <string name="netmask">校园网子网掩码</string>
     <string name="gateway">校园网网关</string>
+    <string name="validConnTitle">可能未连接路由器</string>
+    <string name="validConnMsg">是否退出应用程序</string>
+    <string name="validConnYes">是</string>
+    <string name="validConnNo">否</string>
+    <string name="loadCore">正在加载内核</string>
+    <string name="core_loaded_successfully">内核加载成功</string>
 </resources>
