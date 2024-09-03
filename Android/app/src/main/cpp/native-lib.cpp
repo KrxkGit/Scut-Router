@@ -109,12 +109,11 @@ JNIEXPORT void JNICALL
 Java_com_example_scut_1router_LoginActivity_cancelAutoLogin(JNIEnv *env, jobject thiz) {
     CancelAutoLogin();
 }
+
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_scut_1router_MainActivity_00024Companion_initLibSSHCommand(JNIEnv *env,
-                                                                            jobject thiz,
-                                                                            jstring download_path) {
-
+Java_com_example_scut_1router_MainActivity_initLibSSHCommand(JNIEnv *env, jobject thiz,
+                                                             jstring download_path) {
     const char* download_pathStr = env->GetStringUTFChars(download_path, nullptr);
 
     Init((void *)download_pathStr);
