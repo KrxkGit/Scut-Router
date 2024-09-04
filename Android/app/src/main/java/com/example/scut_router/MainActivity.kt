@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.scut_router.databinding.ActivityMainBinding
+import java.net.Inet4Address
+import java.net.NetworkInterface
+import org.apache.commons.net.util.SubnetUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,10 +92,26 @@ class MainActivity : AppCompatActivity() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         initLibSSHCommand(downloadPath)
 
-        Toast.makeText(this, getString(R.string.core_loaded_successfully), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.core_loaded_successfully), Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun htonl(value: Int): Int {
+        return (value shl 24) or
+                ((value and 0x00FF0000) shr 8) or
+                ((value and 0x0000FF00) shl 8) or
+                (value shr 24)
+    }
+
+    private fun ntohl(value: Int): Int {
+        return (value shl 24) or
+                ((value and 0x00FF0000) shr 8) or
+                ((value and 0x0000FF00) shl 8) or
+                (value shr 24)
     }
 
     private fun checkIsValidConn(): Boolean {
+        // 分析是否与 已知子网 吻合
         // 检查是否正确连接路由器
         val context: Context = this
         val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -102,11 +121,33 @@ class MainActivity : AppCompatActivity() {
         val ipStr = Formatter.formatIpAddress(ipAddr)
         println("IP 地址： $ipStr")
 
-        if (ipStr != this.getString(R.string.default_router_conn)) {
-            return false
-        } else {
-            return true
+        val interfaces = NetworkInterface.getNetworkInterfaces()
+        while (interfaces.hasMoreElements()) {
+            val ifa = interfaces.nextElement()
+            if (!ifa.isUp || ifa.isLoopback) {
+                continue
+            }
+            if (ifa.name == getString(R.string.wlanIfaName)) {
+                val addresses = ifa.interfaceAddresses
+                for (addr in addresses) {
+                    if (addr.address is Inet4Address) {
+                        val prefixLen = addr.networkPrefixLength
+                        val subnetUtils = SubnetUtils("$ipStr/$prefixLen")
+                        val subNet = subnetUtils.info
+
+                        println("IP 子网: ${subNet.networkAddress}")
+
+                        if (subNet.networkAddress == this.getString(R.string.default_router_conn)) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+            }
         }
+
+        return false
     }
 
 

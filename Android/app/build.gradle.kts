@@ -11,8 +11,8 @@ android {
         applicationId = "com.krxkli.scut_router"
         minSdk = 24
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.1.1"
+        versionCode = 4
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.preference)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.legacy.support.v4)
+    implementation("commons-net:commons-net:3.11.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
