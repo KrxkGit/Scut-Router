@@ -27,4 +27,5 @@
     <string name="loadCore">Loading Core</string>
     <string name="core_loaded_successfully">Core Loaded successfully</string>
     <string name="wlanIfaName" translatable="false">wlan0</string>
+    <string name="default_router_gateway" translatable="false">192.168.0.101</string>
 </resources>

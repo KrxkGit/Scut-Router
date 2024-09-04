@@ -116,10 +116,14 @@ class MainActivity : AppCompatActivity() {
         val context: Context = this
         val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val wifiInfo = wifiManager.connectionInfo
+        val dhcpInfo = wifiManager.dhcpInfo
         val ipAddr = wifiInfo.ipAddress
+        val gateway = dhcpInfo.gateway
 
         val ipStr = Formatter.formatIpAddress(ipAddr)
+        val gatewayStr = Formatter.formatIpAddress(gateway)
         println("IP 地址： $ipStr")
+        println("网关地址： ${gatewayStr}")
 
         val interfaces = NetworkInterface.getNetworkInterfaces()
         while (interfaces.hasMoreElements()) {
@@ -137,7 +141,9 @@ class MainActivity : AppCompatActivity() {
 
                         println("IP 子网: ${subNet.networkAddress}")
 
-                        if (subNet.networkAddress == this.getString(R.string.default_router_conn)) {
+                        if (subNet.networkAddress == this.getString(R.string.default_router_conn) && gatewayStr == getString(
+                                R.string.default_router_gateway
+                            )) {
                             return true
                         } else {
                             return false
