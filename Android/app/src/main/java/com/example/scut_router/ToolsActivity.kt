@@ -2,6 +2,7 @@ package com.example.scut_router
 
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,15 +21,19 @@ class ToolsActivity : AppCompatActivity() {
 
         // 定义按钮行为
         findViewById<ImageButton>(R.id.imageButtonWired).setOnClickListener() {
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
             wired()
         }
         findViewById<ImageButton>(R.id.imageButtonWireless).setOnClickListener() {
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
             wireless()
         }
         findViewById<ImageButton>(R.id.imageButtonSyncTime).setOnClickListener() {
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
             syncTime()
         }
         findViewById<ImageButton>(R.id.imageButtonReboot).setOnClickListener() {
+            Toast.makeText(this, "命令发送完成", Toast.LENGTH_SHORT).show()
             reboot()
         }
     }
