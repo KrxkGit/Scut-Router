@@ -19,11 +19,13 @@
     <string name="gateway">gateway</string>
     <string name="dns_1" translatable="false">DNS 1</string>
     <string name="dns_2" translatable="false">DNS 2</string>
-    <string name="default_router_conn" translatable="false">192.168.0.101</string>
+    <string name="default_router_conn" translatable="false">192.168.0.0</string>
     <string name="validConnTitle">The router may not be connected</string>
     <string name="validConnMsg">Whether to exit the application</string>
     <string name="validConnYes">Yes</string>
     <string name="validConnNo">No</string>
     <string name="loadCore">Loading Core</string>
     <string name="core_loaded_successfully">Core Loaded successfully</string>
+    <string name="wlanIfaName" translatable="false">wlan0</string>
+    <string name="default_router_gateway" translatable="false">192.168.0.101</string>
 </resources>
